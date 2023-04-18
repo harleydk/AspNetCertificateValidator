@@ -2,41 +2,43 @@
 
 
 
-### Eksempel på konfiguration.
+### How to set it up.
 
 ```C#
-public void ConfigureServices(IServiceCollection services)
+
+builder.Services.AddCertificateForwarding(options =>
 {
+    // Add this header to the headers of the client's request. Value is the client's certificate, as a Base64-encoded string.
+    options.CertificateHeader = "X-ARR-ClientCert";
+});
 
-    // Håndtér modtagelse af certifikater fra klienterne. Uden denne vil vi ikke kunne tilføje services.AddKpCertificateMiddleware.
-    services.AddCertificateForwarding(options =>
-    {
-        options.CertificateHeader = "KP-API-CERT";
-    });
-
-    // Håndter validering af klient-certifikater mod et private, self-signed certifikat.
-    services.AddAspNetCertificateValidator(options =>
-    {
-        options.Logger = logger;
-
-        List<ICertificateValidator> certificateValidators = new();
-
-        string PfxFilename = @"/Resources/Kp.Stud.AdSync.pfx";
-        string PfxPassword = "wallen11";
-        certificateValidators.Add(new CertificateEncryptionValidator(PfxFilename, PfxPassword, logger));
-
-        // Eksempel på tilføjelse af yderligere validators
-        //string acceptableClientCertificateThumbprint = @"399C573E330794FFABB015558DA0A2095FF5C0EC";
-        //IClientCertificateThumbprintStore clientCertificateThumbprintStore = new FakeClientCertificateThumbprintStoreForTest(acceptableClientCertificateThumbprint);
-        //certificateValidators.Add(new CertificateThumbprintValidator(clientCertificateThumbprintStore));
-
-        options.CertificateValidators = certificateValidators;
-    });
-}
-
-public void Configure(WebApplication app)
+builder.Services.AddAspNetCertificateValidator(options =>
 {
-    _ = app.UseCertificateForwarding();
-    _ = app.UseMiddleware<AspNetCertificateValidator>();
-}
+    options.Logger = logger; // Replace with your own.
+
+    List<ICertificateValidator> certificateValidators = new(); // Instantiate your own validators.
+
+    string PfxFilename = config["PrivateCertPath"]
+        ?? throw new ArgumentException($"No PrivateCertPath in config.");
+    string PfxPassword = config["PrivateCertPassword"]
+       ?? throw new ArgumentException($"No PrivateCertPassword in config.");
+    certificateValidators.Add(new CertificateEncryptionValidator(PfxFilename, PfxPassword, logger));
+
+    string acceptableClientCertificateThumbprint = config["ClientPublicThumbprint"]
+        ?? throw new ArgumentException($"No ClientPublicThumbprint in config.");
+
+    IClientCertificateThumbprintStore clientCertificateThumbprintStore = new FakeClientCertificateThumbprintStoreForTest(acceptableClientCertificateThumbprint);
+    certificateValidators.Add(new CertificateThumbprintValidator(clientCertificateThumbprintStore));
+
+    options.CertificateValidators = certificateValidators;
+});
+
+var app = builder.Build();
+
+_ = app.UseCertificateForwarding();
+_ = app.UseMiddleware<AspNetCertificateValidator>();
+_ = app.UseHttpsRedirection();
+
+_ = app.UseAuthentication();
+_ = app.UseAuthorization();
 ```

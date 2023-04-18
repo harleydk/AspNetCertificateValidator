@@ -3,12 +3,12 @@
     "SampleApi": {
       "commandName": "Project",
       "launchBrowser": true,
-      "launchUrl": "HealthProbe",
+      "launchUrl": "api/HealthProbe",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       },
       "dotnetRunMessages": true,
-      "applicationUrl": "http://localhost:5008"
+      "applicationUrl": "http://localhost:5008;https://localhost:5007"
     },
     "IIS Express": {
       "commandName": "IISExpress",
