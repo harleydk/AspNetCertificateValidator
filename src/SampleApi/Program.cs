@@ -29,7 +29,7 @@ namespace SampleApi
                 List<ICertificateValidator> certificateValidators = new(); // Instantiate your own validators.
 
                 string PfxFilename = config["PrivateCertPath"]
-                    ?? throw new ArgumentException($"No ClientPublicCertificateHeaderName in config.");
+                    ?? throw new ArgumentException($"No PrivateCertPath in config.");
                 string PfxPassword = config["PrivateCertPassword"]
                    ?? throw new ArgumentException($"No PrivateCertPassword in config.");
                 certificateValidators.Add(new CertificateEncryptionValidator(PfxFilename, PfxPassword, logger));
