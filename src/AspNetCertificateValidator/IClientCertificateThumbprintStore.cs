@@ -1,4 +1,4 @@
-﻿namespace AspNetCertificateValidator;
+﻿namespace AspNetCertificateValidation;
 
 public interface IClientCertificateThumbprintStore
 {

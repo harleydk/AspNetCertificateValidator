@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
 using Microsoft.Extensions.Logging;
 
-namespace AspNetCertificateValidator;
+namespace AspNetCertificateValidation;
 
 public class AspNetCertificateValidator
 {
@@ -16,7 +16,7 @@ public class AspNetCertificateValidator
         _certificateValidators = options.Value.CertificateValidators
             ?? throw new ArgumentException($"{nameof(_certificateValidators)} null.");
 
-        _logger = options.Value.Logger 
+        _logger = options.Value.Logger
             ?? throw new ArgumentException($"{nameof(_logger)} null.");
 
         _next = next;

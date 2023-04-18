@@ -1,4 +1,6 @@
-﻿namespace AspNetCertificateValidator.FakesForTest;
+﻿using AspNetCertificateValidation;
+
+namespace AspNetCertificateValidation.FakesForTest;
 
 public sealed class FakeClientCertificateThumbprintStoreForTest : IClientCertificateThumbprintStore
 {

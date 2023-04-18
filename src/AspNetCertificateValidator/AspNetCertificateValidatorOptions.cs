@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.Logging.Abstractions;
 using Microsoft.Extensions.Logging;
 
-namespace AspNetCertificateValidator;
+namespace AspNetCertificateValidation;
 
 public class AspNetCertificateValidatorOptions
 {

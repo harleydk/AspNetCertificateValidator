@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 
-namespace AspNetCertificateValidator;
+namespace AspNetCertificateValidation;
 
 public static class AspNetCertificateValidatorExtentions
 {

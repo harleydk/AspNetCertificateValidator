@@ -4,7 +4,7 @@ using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 
-namespace AspNetCertificateValidator;
+namespace AspNetCertificateValidation;
 
 public sealed class CertificateEncryptionValidator : ICertificateValidator, IDisposable
 {
@@ -35,17 +35,18 @@ public sealed class CertificateEncryptionValidator : ICertificateValidator, IDis
             }
 
             // Initialize private certificate if not already initialized
-            string fullCertificatePath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + _pfxPath;
-            _privateCertificate ??= new X509Certificate2(fullCertificatePath, _certificatePassword);
+            _privateCertificate ??= new X509Certificate2(_pfxPath, _certificatePassword);
 
             string thumbprint = publicCertificate.Thumbprint;
             _logger.LogInformation($"Validating private certificate against public, with thumbprint {thumbprint}.");
 
             // Get the public key from the client certificate
-            RSA publicKey = publicCertificate?.GetRSAPublicKey() ?? throw new ArgumentException($"Could not call GetRSAPublicKey() on {nameof(publicCertificate)}.");
+            RSA publicKey = publicCertificate?.GetRSAPublicKey()
+                ?? throw new ArgumentException($"Could not call GetRSAPublicKey() on {nameof(publicCertificate)}.");
 
             // Get the private key from the self-signed certificate
-            RSA privateKey = _privateCertificate.GetRSAPrivateKey() ?? throw new ArgumentException($"Could not call GetRSAPrivateKey() on {nameof(_privateCertificate)}.");
+            RSA privateKey = _privateCertificate.GetRSAPrivateKey()
+                ?? throw new ArgumentException($"Could not call GetRSAPrivateKey() on {nameof(_privateCertificate)}.");
 
             // Use the public key to encrypt a test message
             Guid testMessageGuid = Guid.NewGuid();
