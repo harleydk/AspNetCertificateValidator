@@ -6,12 +6,12 @@ namespace AspNetCertificateValidation;
 public class AspNetCertificateValidatorOptions
 {
     /// <summary>
-    /// Well, det er en logger.
+    /// Well, it's a logger.
     /// </summary>
     public ILogger Logger { get; set; } = NullLogger.Instance;
 
-    ///// <summary>
-    ///// En <see cref="ICertificateValidator"/>, der kan validere et indkommet public certificate mod et privat certifikat.
-    ///// </summary>
+    /// <summary>
+    /// A <see cref="ICertificateValidator"/>, that may validate a public certificate.
+    /// </summary>
     public IEnumerable<ICertificateValidator>? CertificateValidators { get; set; } = new List<ICertificateValidator> { };
 }

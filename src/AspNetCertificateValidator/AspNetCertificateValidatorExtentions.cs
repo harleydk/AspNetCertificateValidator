@@ -5,8 +5,8 @@ namespace AspNetCertificateValidation;
 public static class AspNetCertificateValidatorExtentions
 {
     /// <summary>
-    /// Tilføjer <see cref="AspNetCertificateValidatorOptions"/> til den aktuelle <see cref="IServiceCollection" />,
-    /// bringes i spil ved brug af 'app.AddMiddleware<<see cref="AspNetCertificateValidator"/>>.
+    /// Add <see cref="AspNetCertificateValidatorOptions"/> to the <see cref="IServiceCollection" />,
+    /// used from 'app.AddMiddleware<<see cref="AspNetCertificateValidator"/>>.
     /// </summary>
     public static IServiceCollection AddAspNetCertificateValidator(
         this IServiceCollection services,
